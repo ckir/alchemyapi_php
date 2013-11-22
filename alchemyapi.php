@@ -20,17 +20,7 @@ class AlchemyAPI {
 	  * OUTPUT:
 	  * none
 	*/ 
-	public function AlchemyAPI() {
-		//Load the API Key from api_key.txt
-		$key = trim(file_get_contents("api_key.txt"));
-	
-		if (!$key) {
-			//Keys should not be blank
-			echo 'The api_key.txt file appears to be blank, please copy/paste your API key in the file: api_key.txt', PHP_EOL;
-			echo 'If you do not have an API Key from AlchemyAPI, please register for one at: http://www.alchemyapi.com/api/register.html', PHP_EOL;
-			file_put_contents('api_key.txt','');
-			exit(1);
-		}
+	public function AlchemyAPI( $key ) {
 
 		if (strlen($key) != 40) {
 			echo strlen($key), PHP_EOL;
@@ -525,29 +515,6 @@ class AlchemyAPI {
 			return json_decode($response, true);
 		} catch (Exception $e) {
 			return array('status'=>'ERROR', 'statusInfo'=>'Network error');
-		}
-	}
-}
-
-
-/** 
-  * Checks if file is called directly, and then writes the API key to api_key.txt if it's included in the args 
-  *
-  * Note: if you don't have an API key, register for one at: http://www.alchemyapi.com/api/register.html
-  *
-  * INPUT:
-  * Your API Key (sent as a command line argument)
-  *
-  * OUTPUT:
-  * none
-*/  
-if (php_sapi_name() == 'cli') {
-	if (count($argv) == 2) {
-		if (strlen($argv[1]) == 40) {
-			file_put_contents('api_key.txt',$argv[1]);
-			echo 'Key: ' . $argv[1] . ' successfully written to api_key.txt', PHP_EOL;
-		} else {
-			echo 'Invalid key! Make sure it is 40 characters in length', PHP_EOL;
 		}
 	}
 }
